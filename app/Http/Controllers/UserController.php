@@ -46,6 +46,11 @@ class UserController extends Controller
             "email" => 'required|string|email|max:100',
             "telp" => 'required|string|min:6|max:20',
             "password" => 'required|min:8',
+        ],
+        [
+            'required' => 'Kolom :attribute tidak boleh kosong.',
+            'min' => 'Isi kolom :attribute minimal :min karakter.',
+            'between' => 'Isi kolom :attribute tidak di antara :min - :max karakter.',
         ]);
 
         $user = User::create([
@@ -87,7 +92,7 @@ class UserController extends Controller
     public function edit(Request $request, $id)
     {
         $row = User::with('roles')->get()->where('id', $id)->first();
-        return view('admin.edit-profile', compact("row"));
+        return view('admin.user.edit-user', compact("row"));
     }
 
     public function editProfile(Request $request)
@@ -111,9 +116,15 @@ class UserController extends Controller
             "nama" => 'required|string|min:3',
             "email" => 'required|string|email|max:100',
             "telp" => 'required|string|min:6|max:20',
+        ],
+        [
+            'required' => 'Kolom :attribute tidak boleh kosong.',
+            'min' => 'Isi kolom :attribute minimal :min karakter.',
+            'between' => 'Isi kolom :attribute tidak di antara :min - :max karakter.',
         ]);
 
-        if ( ! strlen($request->password) < 8)
+
+        if (strlen($request->password) < 8)
         {
             User::whereId($id)->update([
                 'nama' => $request->nama,
@@ -136,15 +147,21 @@ class UserController extends Controller
 
     public function updateProfile(Request $request)
     {
-        $request -> validate([
-            "nama" => 'required|string|min:3',
-            "email" => 'required|string|email|max:100',
-            "telp" => 'required|string|min:6|max:20',
-        ]);
+        $request -> validate(
+            [
+                "nama" => 'required|string|min:3',
+                "email" => 'required|string|email|max:100',
+                "telp" => 'required|string|min:6|max:20',
+            ],
+            [
+                'required' => 'Kolom :attribute tidak boleh kosong.',
+                'min' => 'Isi kolom :attribute minimal :min karakter.',
+                'between' => 'Isi kolom :attribute tidak di antara :min - :max karakter.',
+            ]);
 
         $id = Auth::id();
 
-        if ( ! strlen($request->password) < 8)
+        if (strlen($request->password) > 8)
         {
             User::whereId($id)->update([
                 'nama' => $request->nama,

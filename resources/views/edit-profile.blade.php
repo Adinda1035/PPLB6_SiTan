@@ -17,6 +17,15 @@
             </div>
 
             <div class="section-body">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
 {{--                <h2 class="section-title">Petunjuk Pengisian Form</h2>--}}
 {{--                    <ul class="section-lead">--}}
 {{--                        <li>Username wajib diisi minimal 6 karakter.</li>--}}
