@@ -76,11 +76,11 @@
                     </li>
 
                     <li class="menu-header">Kandang</li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown @yield('kandang-active')">
                         <a href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i> <span>Pengelolaan Kandang</span></a>
                         <ul class="dropdown-menu">
-                            <li><a class="nav-link" href="#">Lihat Kandang</a></li>
-                            <li><a class="nav-link" href="#">Buat Kandang Baru</a></li>
+                            <li class="@yield('index-kandang-active')"><a class="nav-link" href="{{route("admin-index-kandang")}}">Lihat Kandang</a></li>
+                            <li class="@yield('create-kandang-active')"><a class="nav-link" href="{{route("admin-create-kandang")}}">Buat Kandang Baru</a></li>
                         </ul>
                     </li>
 

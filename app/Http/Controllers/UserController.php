@@ -16,8 +16,6 @@ class UserController extends Controller
      */
     public function index()
     {
-
-        $data = DB::table('users')->paginate(10);
         $data = User::with('roles')->get();
         return view('admin.user.index-user', compact("data"));
     }

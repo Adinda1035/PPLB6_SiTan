@@ -3,7 +3,6 @@
 @section('title') Edit User @endsection
 
 @section('user-active') active @endsection
-@section('update-user-active') active @endsection
 
 @section('content')
     <!-- Main Content -->
