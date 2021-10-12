@@ -22,7 +22,7 @@ class KandangController extends Controller
                     ->select('kandangs.*', 'users.nama')
                     ->orderBy('no_kandang')
                     ->join('users', 'kandangs.id_karyawan', '=', 'users.id')
-                    ->paginate(10);
+                    ->simplePaginate(10);
 
         foreach($data as $row){
             $to = \Carbon\Carbon::now();
@@ -115,7 +115,6 @@ class KandangController extends Controller
     {
 
         $request -> validate([
-//            "no_kandang"=> 'required|integer|gt:0|gte:0|unique:kandangs',
             "no_kandang"=> 'required|integer|gt:0|gte:0|unique:kandangs,no_kandang,'.$id,
             "jumlah_bebek" => 'required|integer|gt:0|gte:0',
             "id_karyawan" => 'required|integer',

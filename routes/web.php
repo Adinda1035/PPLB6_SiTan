@@ -24,12 +24,10 @@ Auth::routes([
 
 Route::group(['middleware' => 'auth'], function () {
 
-//    Route::get('/', 'DashboardController@index')->middleware('role:admin')->name('dashboard');
-//    Route::get('/', 'DashboardController@index')->middleware('role:karyawan')->name('dashboard');
-
     Route::get('/', 'DashboardController@index')->name('dashboard');
     Route::get('/edit-profil', 'UserController@editProfile')->name('edit-profile');
     Route::post('/update-profil', 'UserController@updateProfile')->name('update-profile');
+
 
     Route::get('/admin/user', 'UserController@index')->middleware('role:admin')->name('admin-index-user');
     Route::get('/admin/user/create', 'UserController@create')->middleware('role:admin')->name('admin-create-user');
@@ -38,22 +36,32 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/admin/user/update/{id}', 'UserController@update')->middleware('role:admin')->name('admin-update-user');
     Route::post('/admin/user/delete/{id}', 'UserController@destroy')->middleware('role:admin')->name('admin-destroy-user');
 
+
     Route::get('/admin/kandang', 'KandangController@index')->middleware('role:admin')->name('admin-index-kandang');
     Route::get('/admin/kandang/create', 'KandangController@create')->middleware('role:admin')->name('admin-create-kandang');
     Route::post('/admin/kandang/store', 'KandangController@store')->middleware('role:admin')->name('admin-store-kandang');
     Route::get('/admin/kandang/edit/{id}', 'KandangController@edit')->middleware('role:admin')->name('admin-edit-kandang');
     Route::post('/admin/kandang/update/{id}', 'KandangController@update')->middleware('role:admin')->name('admin-update-kandang');
     Route::post('/admin/kandang/delete/{id}', 'KandangController@destroy')->middleware('role:admin')->name('admin-destroy-kandang');
+
+
+    Route::get('admin/laporan/harian', 'LaporanController@indexAdmin')->middleware('role:admin')->name('admin-index-laporan-harian');
+
+    Route::get('/laporan/harian', 'LaporanController@index')->middleware('role:karyawan')->name('index-laporan-harian');
+    Route::get('/laporan/harian/create', 'LaporanController@create')->middleware('role:karyawan')->name('create-laporan-harian');
+    Route::post('/laporan/harian/store', 'LaporanController@store')->middleware('role:karyawan')->name('store-laporan-harian');
+    Route::get('/laporan/harian/edit/{id}', 'LaporanController@edit')->middleware('role:karyawan')->name('edit-laporan-harian');
+    Route::post('/laporan/harian/update/{id}', 'LaporanController@update')->middleware('role:karyawan')->name('update-laporan-harian');
+
+
+    Route::get('admin/laporan/bulanan', 'LaporanBulananController@index')->middleware('role:admin')->name('admin-index-laporan-bulanan');
+
+    Route::get('/laporan/bulanan', 'LaporanBulananController@index')->middleware('role:karyawan')->name('index-laporan-bulanan');
+    Route::get('/laporan/harian/bulanan', 'LaporanBulananController@create')->middleware('role:karyawan')->name('create-laporan-bulanan');
+    Route::post('/laporan/harian/bulanan', 'LaporanBulananController@store')->middleware('role:karyawan')->name('store-laporan-bulanan');
+    Route::get('/laporan/bulanan/edit/{id}', 'LaporanBulananController@edit')->middleware('role:karyawan')->name('edit-laporan-bulanan');
+    Route::post('/laporan/bulanan/update/{id}', 'LaporanBulananController@update')->middleware('role:karyawan')->name('update-laporan-bulanan');
 });
 
 
 
-//Route::get('admin-page', function() {
-//    return 'Halaman untuk Admin';
-//})->middleware('role:admin')->name('admin.page');
-//
-//Route::get('user-page', function() {
-//    return 'Halaman untuk User';
-//})->middleware('role:karyawan')->name('user.page');
-
-Route::get('/home', 'HomeController@index')->name('home');

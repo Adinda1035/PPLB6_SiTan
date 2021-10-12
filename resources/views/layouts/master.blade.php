@@ -66,33 +66,59 @@
                     <li class="menu-header">Dashboard</li>
                     <li class="nav-item @yield('dashboard-active')"><a class="nav-link" href="{{route("dashboard")}}"><i class="fas fa-fire"></i> <span>Dashboard</span></a></li>
 
-                    <li class="menu-header">User</li>
-                    <li class="nav-item dropdown @yield('user-active')">
-                        <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Pengelolaan User</span></a>
-                        <ul class="dropdown-menu">
-                            <li class="@yield('index-user-active')"><a class="nav-link" href="{{route("admin-index-user")}}">Lihat User</a></li>
-                            <li class="@yield('create-user-active')"><a class="nav-link" href="{{route("admin-create-user")}}">Buat User</a></li>
-                        </ul>
-                    </li>
+                    @if(Auth::user()->hasRole('admin'))
+                        <li class="menu-header">User</li>
+                        <li class="nav-item dropdown @yield('user-active')">
+                            <a href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Pengelolaan User</span></a>
+                            <ul class="dropdown-menu">
+                                <li class="@yield('index-user-active')"><a class="nav-link" href="{{route("admin-index-user")}}">Lihat User</a></li>
+                                <li class="@yield('create-user-active')"><a class="nav-link" href="{{route("admin-create-user")}}">Buat User</a></li>
+                            </ul>
+                        </li>
+                    @endif
 
-                    <li class="menu-header">Kandang</li>
-                    <li class="nav-item dropdown @yield('kandang-active')">
-                        <a href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i> <span>Pengelolaan Kandang</span></a>
-                        <ul class="dropdown-menu">
-                            <li class="@yield('index-kandang-active')"><a class="nav-link" href="{{route("admin-index-kandang")}}">Lihat Kandang</a></li>
-                            <li class="@yield('create-kandang-active')"><a class="nav-link" href="{{route("admin-create-kandang")}}">Buat Kandang Baru</a></li>
-                        </ul>
-                    </li>
+                    @if(Auth::user()->hasRole('admin'))
+                        <li class="menu-header">Kandang</li>
+                        <li class="nav-item dropdown @yield('kandang-active')">
+                            <a href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i> <span>Pengelolaan Kandang</span></a>
+                            <ul class="dropdown-menu">
+                                <li class="@yield('index-kandang-active')"><a class="nav-link" href="{{route("admin-index-kandang")}}">Lihat Kandang</a></li>
+                                <li class="@yield('create-kandang-active')"><a class="nav-link" href="{{route("admin-create-kandang")}}">Buat Kandang Baru</a></li>
+                            </ul>
+                        </li>
+                    @endif
 
                     <li class="menu-header">Laporan</li>
-                    <li class="nav-item dropdown">
-                        <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Laporan</span></a>
+                    <li class="nav-item dropdown @yield('laporan-harian-active')">
+                        <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Laporan Harian</span></a>
                         <ul class="dropdown-menu">
-                            <li><a class="nav-link" href="#">Lihat Laporan</a></li>
-{{--                            <li><a class="nav-link" href="#">Editor</a></li>--}}
-{{--                            <li><a class="nav-link" href="#">Validation</a></li>--}}
+                            @if(Auth::user()->hasRole('admin'))
+                                <li class="@yield('index-laporan-harian-active')"><a class="nav-link" href="{{route("admin-index-laporan-harian")}}">Lihat Laporan Harian</a></li>
+                            @endif
+                            @if(Auth::user()->hasRole('karyawan'))
+                                <li class="@yield('index-laporan-harian-active')"><a class="nav-link" href="{{route("index-laporan-harian")}}">Lihat Laporan Harian</a></li>
+                                <li class="@yield('create-laporan-harian-active')"><a class="nav-link" href="{{route("create-laporan-harian")}}">Buat Laporan Harian</a></li>
+                            @endif
                         </ul>
                     </li>
+
+                    <li class="nav-item dropdown @yield('laporan-bulanan-active')">
+                        <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Laporan Bulanan</span></a>
+                        <ul class="dropdown-menu">
+                            @if(Auth::user()->hasRole('admin'))
+                                <li class="@yield('index-laporan-harian-active')"><a class="nav-link" href="{{route("index-laporan-harian")}}">Lihat Laporan Bulanan</a></li>
+                            @endif
+                            @if(Auth::user()->hasRole('karyawan'))
+                                <li class="@yield('index-laporan-bulanan-active')"><a class="nav-link" href="{{route("index-laporan-bulanan")}}">Lihat Laporan Bulanan</a></li>
+                                <li class="@yield('create-laporan-bulanan-active')"><a class="nav-link" href="{{route("create-laporan-bulanan")}}">Buat Laporan Bulanan</a></li>
+                            @endif
+                        </ul>
+                    </li>
+
+                    @if(Auth::user()->hasRole('karyawan'))
+                        <li class="menu-header">Lain-lain</li>
+                        <li class="nav-item @yield('simulasi-active')"><a class="nav-link" href="{{route("dashboard")}}"><i class="fas fa-fire"></i> <span>Simulasi Telur Asin</span></a></li>
+                    @endif
                 </ul>
             </aside>
         </div>
