@@ -25,6 +25,7 @@ Auth::routes([
 Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/', 'DashboardController@index')->name('dashboard');
+
     Route::get('/edit-profil', 'UserController@editProfile')->name('edit-profile');
     Route::post('/update-profil', 'UserController@updateProfile')->name('update-profile');
 

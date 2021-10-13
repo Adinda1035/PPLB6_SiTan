@@ -18,22 +18,17 @@
             </div>
 
             <div class="section-body">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                <div id="app">
+                    @include('flash-message')
+                    @yield('messages')
+                </div>
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="card">
                             <div class="card-header">
                                 <h4>Form Buat Laporan Harian</h4>
                             </div>
-                            <form method="post" action="{{route("store-laporan-harian")}}" id="form-create-laporan-harian">
+                            <form method="post" action="{{route("update-laporan-harian", $row->id)}}" id="form-create-laporan-harian">
                                 @csrf
                                 <div class="card-body">
                                     <div class="form-group">
@@ -68,14 +63,14 @@
                                     </div>
                                     <div class="form-group">
                                         <div class="form-group">
-                                            <label for="kondisi_kandang">Kondisi Kebersihan Kandang</label>
+                                            <label for="kondisi_kandang">Kondisi Kandang</label>
                                             <select class="form-control select2" name="kondisi_kandang" form="form-create-laporan-harian">
-                                                @if($row->kondisi_kandang == "bersih")
-                                                    <option value="bersih">Bersih</option>
-                                                    <option value="kotor">Kotor</option>
+                                                @if($row->kondisi_kandang == "baik")
+                                                    <option value="baik">Baik</option>
+                                                    <option value="buruk">Buruk</option>
                                                 @else
-                                                    <option value="bersih">Bersih</option>
-                                                    <option value="kotor" selected>Kotor</option>
+                                                    <option value="baik">Baik</option>
+                                                    <option value="buruk" selected>Buruk</option>
                                                 @endif
                                             </select>
                                         </div>

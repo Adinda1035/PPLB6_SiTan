@@ -18,6 +18,10 @@
             </div>
 
             <div class="section-body">
+                <div id="app">
+                    @include('flash-message')
+                    @yield('messages')
+                </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">

@@ -19,15 +19,10 @@
             </div>
 
             <div class="section-body">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+                <div id="app">
+                    @include('flash-message')
+                    @yield('messages')
+                </div>
                 <h2 class="section-title">Petunjuk Pengisian Form</h2>
                     <ul class="section-lead">
                         <li>No. Kandang merupakan nomor dari kandang tersebut.</li>

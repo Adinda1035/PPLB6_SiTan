@@ -74,7 +74,7 @@ class KandangController extends Controller
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
-        return redirect(route("admin-create-kandang"));
+        return redirect(route("admin-index-kandang"))->with('success','Sukses membuat kandang baru.');
     }
 
     /**
@@ -114,6 +114,8 @@ class KandangController extends Controller
     public function update(Request $request, $id)
     {
 
+        $row = Kandang::find($id);
+
         $request -> validate([
             "no_kandang"=> 'required|integer|gt:0|gte:0|unique:kandangs,no_kandang,'.$id,
             "jumlah_bebek" => 'required|integer|gt:0|gte:0',
@@ -134,7 +136,7 @@ class KandangController extends Controller
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
-        return redirect(route("admin-index-kandang"));
+        return redirect(route("admin-index-kandang"))->with('warning',"Sukses melakukan update kandang dengan nomor $row->no_kandang.");
     }
 
 

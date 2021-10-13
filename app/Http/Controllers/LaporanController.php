@@ -43,7 +43,7 @@ class LaporanController extends Controller
             ->orderBy('tanggal_laporan', 'desc')
             ->orderBy('no_kandang')
             ->join('users', 'laporans.id_karyawan', '=', 'users.id')
-            ->paginate(20);
+            ->paginate(8);
 
         foreach($data as $row){
             $row->tanggal_laporan = \Carbon\Carbon::parse($row->tanggal_laporan)->isoFormat('D MMMM Y');
@@ -73,22 +73,24 @@ class LaporanController extends Controller
      */
     public function store(Request $request)
     {
+        $row = Kandang::where('no_kandang', $request->no_kandang)->firstOrFail();
+
         $id = Auth::user()->id;
         $request -> validate([
             "no_kandang"=> 'required|integer|gt:0|gte:0',
-//            "no_kandang"=> 'required|integer|gt:0|gte:0|unique:laporans,tanggal_laporan,'.$id,
             "tanggal_laporan"=> 'required|date',
-            "panen_harian"=> 'required|numeric|gt:0|gte:0',
-            "jumlah_bebek_sakit" => 'required|integer|gt:0|gte:0',
-            "jumlah_bebek_mati" => 'required|integer|gt:0|gte:0',
+            "panen_harian"=> 'required|numeric|min:0',
+            "jumlah_bebek_sakit" => 'required|integer|min:0|max:'.$row->jumlah_bebek ,
+            "jumlah_bebek_mati" => 'required|integer|min:0|max:'.$row->jumlah_bebek ,
             "kondisi_kandang" => 'required|string',
         ],
+
         [
             'required' => 'Kolom :attribute tidak boleh kosong.',
-            'min' => 'Isi kolom :attribute minimal :min karakter.',
+            'min' => 'Kolom :attribute harus bernilai angka positif',
+            'max' => 'Kolom :attribute tidak boleh lebih dari jumlah bebek :max',
             'gt' => 'Kolom :attribute harus bernilai angka positif',
         ]);
-
 
         $laporan = Laporan::create([
             'no_kandang' => $request->no_kandang,
@@ -101,7 +103,14 @@ class LaporanController extends Controller
             'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
-        return redirect(route("create-laporan-harian"));
+        if ($request->jumlah_bebek_mati > 0) {
+            Kandang::whereId($row->id)->update([
+                'jumlah_bebek' => ($row->jumlah_bebek - $request->jumlah_bebek_mati),
+                'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+            ]);
+        }
+
+        return redirect(route("index-laporan-harian"))->with('success','Sukses membuat laporan harian baru.');
     }
 
     /**
@@ -142,28 +151,55 @@ class LaporanController extends Controller
     public function update(Request $request, $id)
     {
 
+        $id_karyawan = Auth::user()->id;
+        $row = Kandang::where('no_kandang', $request->no_kandang)->firstOrFail();
+        $row_laporan = Laporan::whereId($id)->firstOrFail();
+
         $request -> validate([
-//            "no_kandang"=> 'required|integer|gt:0|gte:0|unique:kandangs',
-            "no_kandang"=> 'required|integer|gt:0|gte:0|unique:kandangs,no_kandang,'.$id,
-            "jumlah_bebek" => 'required|integer|gt:0|gte:0',
-            "id_karyawan" => 'required|integer',
+            "no_kandang"=> 'required|integer|gt:0|gte:0',
+            "tanggal_laporan"=> 'required|date',
+            "panen_harian"=> 'required|numeric|min:0',
+            "jumlah_bebek_sakit" => 'required|integer|min:0|max:'.$row->jumlah_bebek ,
+            "jumlah_bebek_mati" => 'required|integer|min:0|max:'.$row->jumlah_bebek ,
+            "kondisi_kandang" => 'required|string',
         ],
             [
                 'required' => 'Kolom :attribute tidak boleh kosong.',
-                'no_kandang.unique' => 'Nomor kandang tidak boleh sama dengan kandang lain.',
                 'min' => 'Isi kolom :attribute minimal :min karakter.',
                 'gt' => 'Kolom :attribute harus bernilai angka positif',
             ]);
 
-        Kandang::whereId($id)->update([
+        if ($request->jumlah_bebek_mati != $row_laporan->jumlah_bebek_mati) {
+
+            if ($request->jumlah_bebek_mati > $row_laporan->jumlah_bebek_mati) {
+                $jumlah_bebek_baru = $row->jumlah_bebek - ($request->jumlah_bebek_mati - $row_laporan->jumlah_bebek_mati);
+                Kandang::whereId($row->id)->update([
+                    'jumlah_bebek' => $jumlah_bebek_baru,
+                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                ]);
+            }
+
+            elseif ($request->jumlah_bebek_mati < $row_laporan->jumlah_bebek_mati) {
+                $jumlah_bebek_baru = $row->jumlah_bebek + ($row_laporan->jumlah_bebek_mati - $request->jumlah_bebek_mati);
+                Kandang::whereId($row->id)->update([
+                    'jumlah_bebek' => $jumlah_bebek_baru,
+                    'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
+                ]);
+            }
+        }
+
+        Laporan::whereId($id)->update([
             'no_kandang' => $request->no_kandang,
-            'jumlah_bebek' => $request->jumlah_bebek,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'id_karyawan' => $request->id_karyawan,
+            'tanggal_laporan' => $request->tanggal_laporan,
+            'panen_harian' => $request->panen_harian,
+            'jumlah_bebek_sakit' => $request->jumlah_bebek_sakit,
+            'jumlah_bebek_mati' => $request->jumlah_bebek_mati,
+            'kondisi_kandang' => $request->kondisi_kandang,
+            'id_karyawan' => $id,
             'updated_at' => \Carbon\Carbon::now()->toDateTimeString(),
         ]);
 
-        return redirect(route("admin-index-kandang"));
+        return redirect(route("index-laporan-harian"))->with('warning',"Sukses melakukan update laporan tanggal $row_laporan->tanggal_laporan.");
     }
 
 
@@ -175,7 +211,6 @@ class LaporanController extends Controller
      */
     public function destroy(Request $request, $id)
     {
-        Kandang::whereId($id)->delete();
-        return redirect(route("admin-index-kandang"));
+        //
     }
 }

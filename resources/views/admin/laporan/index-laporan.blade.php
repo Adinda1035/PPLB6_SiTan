@@ -18,6 +18,10 @@
             </div>
 
             <div class="section-body">
+                <div id="app">
+                    @include('flash-message')
+                    @yield('messages')
+                </div>
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -66,6 +70,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="d-flex justify-content-center mt-2">{!! $data->links() !!}</div>
             </div>
         </section>
     </div>

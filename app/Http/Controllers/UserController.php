@@ -66,7 +66,7 @@ class UserController extends Controller
             $user->assignRole('karyawan');
         }
 
-        return redirect(route("admin-create-user"));
+        return redirect(route("admin-index-user"))->with('success','Sukses membuat user baru.');
     }
 
     /**
@@ -110,6 +110,8 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $row = User::with('roles')->get()->where('id', $id)->first();
+
         $request -> validate([
             "nama" => 'required|string|min:3',
             "email" => 'required|string|email|max:100',
@@ -140,7 +142,7 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect(route("admin-index-user"));
+        return redirect(route("admin-index-user"))->with('warning',"Sukses melakukan update user dengan username '$row->username'.");
     }
 
     public function updateProfile(Request $request)

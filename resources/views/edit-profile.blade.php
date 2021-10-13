@@ -17,22 +17,10 @@
             </div>
 
             <div class="section-body">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
-{{--                <h2 class="section-title">Petunjuk Pengisian Form</h2>--}}
-{{--                    <ul class="section-lead">--}}
-{{--                        <li>Username wajib diisi minimal 6 karakter.</li>--}}
-{{--                        <li>Password wajib diisi minimal 8 karakter.</li>--}}
-{{--                    </ul>--}}
-
-
+                <div id="app">
+                    @include('flash-message')
+                    @yield('messages')
+                </div>
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="card">

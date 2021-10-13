@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Kandang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -11,74 +14,45 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('dashboard');
-    }
+        if (Auth::user()->hasRole('admin'))
+        {
+            $data = DB::table('kandangs')
+                ->select('kandangs.*', 'users.nama')
+                ->orderBy('no_kandang')
+                ->join('users', 'kandangs.id_karyawan', '=', 'users.id')
+                ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+            foreach($data as $row){
+                $row->laporan = DB::table('laporans')
+                                    ->select('panen_harian', 'kondisi_kandang', 'jumlah_bebek_sakit', 'jumlah_bebek_mati')
+                                    ->orderBy('tanggal_laporan', 'desc')
+                                    ->orderBy('updated_at', 'desc')
+                                    ->where('no_kandang', $row->no_kandang)->first();
+            }
+        }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        else {
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+            $id = Auth::user()->id;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+            $data = DB::table('kandangs')
+                ->select('kandangs.*', 'users.nama')
+                ->orderBy('no_kandang')
+                ->join('users', 'kandangs.id_karyawan', '=', 'users.id')
+                ->where('id_karyawan', $id)
+                ->get();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+            foreach($data as $row){
+                $row->laporan = DB::table('laporans')
+                    ->select('panen_harian', 'kondisi_kandang', 'jumlah_bebek_sakit', 'jumlah_bebek_mati')
+                    ->orderBy('tanggal_laporan', 'desc')
+                    ->orderBy('updated_at', 'desc')
+                    ->where('no_kandang', $row->no_kandang)->first();
+            }
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return view('dashboard', compact("data"));
     }
 }
