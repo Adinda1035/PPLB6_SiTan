@@ -148,7 +148,8 @@ class KandangController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        $row = Kandang::find($id);
         Kandang::whereId($id)->delete();
-        return redirect(route("admin-index-kandang"));
+        return redirect(route("admin-index-kandang"))->with('success',"Sukses menghapus kandang nomor $row->no_kandang");
     }
 }

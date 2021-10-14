@@ -190,7 +190,8 @@ class UserController extends Controller
      */
     public function destroy(Request $request, $id)
     {
+        $row = User::with('roles')->get()->where('id', $id)->first();
         User::whereId($id)->delete();
-        return redirect(route("admin-index-user"));
+        return redirect(route("admin-index-user"))->with('success',"Sukses menghapus user dengan username '$row->username'");
     }
 }
