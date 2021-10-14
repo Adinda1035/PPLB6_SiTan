@@ -45,7 +45,28 @@
                                     <h4>Laporan Harian Kandang #{{$row->no_kandang}}</h4>
                                 </div>
                                 <div class="card-body">
-                                    {{$row->laporan->panen_harian}}
+                                    <table>
+                                        <tr>
+                                            <td>Panen Harian Terbaru</td>
+                                            <td>&ensp;:</td>
+                                            <td><b>&emsp;{{$row->laporan->panen_harian}}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Kondisi Kandang</td>
+                                            <td>&ensp;:</td>
+                                            <td class="text-capitalize"><b>&emsp;{{$row->laporan->kondisi_kandang}}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jumlah Bebek Sakit</td>
+                                            <td>&ensp;:</td>
+                                            <td><b>&emsp;{{$row->laporan->jumlah_bebek_sakit}}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Jumlah Bebek Mati</td>
+                                            <td>&ensp;:</td>
+                                            <td><b>&emsp;{{$row->laporan->jumlah_bebek_mati}}</b></td>
+                                        </tr>
+                                    </table>
                                 </div>
                                 <div class="card-footer">
                                     {{$row->nama}}
