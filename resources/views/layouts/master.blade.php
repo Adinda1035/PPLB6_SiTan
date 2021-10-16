@@ -102,18 +102,14 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item dropdown @yield('laporan-bulanan-active')">
-                        <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Laporan Bulanan</span></a>
-                        <ul class="dropdown-menu">
-                            @if(Auth::user()->hasRole('admin'))
-                                <li class="@yield('index-laporan-harian-active')"><a class="nav-link" href="{{route("index-laporan-harian")}}">Lihat Laporan Bulanan</a></li>
-                            @endif
-                            @if(Auth::user()->hasRole('karyawan'))
-                                <li class="@yield('index-laporan-bulanan-active')"><a class="nav-link" href="{{route("index-laporan-bulanan")}}">Lihat Laporan Bulanan</a></li>
-                                <li class="@yield('create-laporan-bulanan-active')"><a class="nav-link" href="{{route("create-laporan-bulanan")}}">Buat Laporan Bulanan</a></li>
-                            @endif
-                        </ul>
-                    </li>
+                    @if(Auth::user()->hasRole('admin'))
+                        <li class="nav-item dropdown @yield('laporan-bulanan-active')">
+                            <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Laporan Bulanan</span></a>
+                            <ul class="dropdown-menu">
+                                <li class="@yield('index-laporan-bulanan-active')"><a class="nav-link" href="{{route("admin-index-laporan-bulanan")}}">Lihat Laporan Bulanan</a></li>
+                            </ul>
+                        </li>
+                    @endif
 
                     @if(Auth::user()->hasRole('karyawan'))
                         <li class="menu-header">Lain-lain</li>

@@ -56,12 +56,7 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('admin/laporan/bulanan', 'LaporanBulananController@index')->middleware('role:admin')->name('admin-index-laporan-bulanan');
-
-    Route::get('/laporan/bulanan', 'LaporanBulananController@index')->middleware('role:karyawan')->name('index-laporan-bulanan');
-    Route::get('/laporan/harian/bulanan', 'LaporanBulananController@create')->middleware('role:karyawan')->name('create-laporan-bulanan');
-    Route::post('/laporan/harian/bulanan', 'LaporanBulananController@store')->middleware('role:karyawan')->name('store-laporan-bulanan');
-    Route::get('/laporan/bulanan/edit/{id}', 'LaporanBulananController@edit')->middleware('role:karyawan')->name('edit-laporan-bulanan');
-    Route::post('/laporan/bulanan/update/{id}', 'LaporanBulananController@update')->middleware('role:karyawan')->name('update-laporan-bulanan');
+    Route::get('admin/laporan/bulanan/{id}', 'LaporanBulananController@show')->middleware('role:admin')->name('admin-show-laporan-bulanan');
 });
 
 

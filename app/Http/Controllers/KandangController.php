@@ -42,7 +42,7 @@ class KandangController extends Controller
      */
     public function create()
     {
-        $data = DB::table('users')->get();
+        $data = User::role('karyawan')->get();
         return view('admin.kandang.create-kandang', compact("data"));
     }
 
@@ -56,12 +56,13 @@ class KandangController extends Controller
     {
         $request -> validate([
             "no_kandang"=> 'required|integer|gt:0|gte:0|unique:kandangs',
-            "jumlah_bebek" => 'required|integer|gt:0|gte:0',
+            "jumlah_bebek" => 'required|integer|min:0',
             "id_karyawan" => 'required|integer',
         ],
         [
             'required' => 'Kolom :attribute tidak boleh kosong.',
             'no_kandang.unique' => 'Nomor kandang tidak boleh sama dengan kandang lain.',
+            'jumlah_bebek.min' => 'Kolom :attribute harus bernilai angka positif.',
             'min' => 'Isi kolom :attribute minimal :min karakter.',
             'gt' => 'Kolom :attribute harus bernilai angka positif',
         ]);
