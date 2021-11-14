@@ -70,7 +70,7 @@ class LaporanController extends Controller
             $diff = $to->diff($from);
             $row->diffMonth = ($diff->y*12) + $diff->m;
 
-            if ($row->diffMonth>2) {
+            if ($row->diffMonth>5) {
                 array_push($available, $row->no_kandang);
             }
         }
