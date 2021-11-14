@@ -5,14 +5,6 @@ available = available.map(String);
 
 $(document).ready(function() {
 
-    // $('#dropdown-no-kandang').change(function() {
-    //     if( $(this).val() === available[0].toString()) {
-    //         $('#panen_harian').prop( "disabled", true );
-    //     } else {
-    //         $('#panen_harian').prop( "disabled", false );
-    //     }
-    // });
-
     if( $.inArray( $(this).val(), available) === -1 ) {
         $('#panen_harian').prop( "disabled", true );
     }
@@ -25,11 +17,7 @@ $(document).ready(function() {
         $('#panen_harian').prop( "disabled", true );
     }
 
-    console.log(available)
-
     $('#dropdown-no-kandang').change(function() {
-        console.log($(this).val())
-        console.log($.inArray( $(this).val(), available))
         if ($(this).val() === "") {
             $('#tanggal_laporan').prop( "disabled", true );
             $('#jumlah_bebek_sakit').prop( "disabled", true );

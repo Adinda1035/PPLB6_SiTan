@@ -113,7 +113,7 @@
 
                     @if(Auth::user()->hasRole('karyawan'))
                         <li class="menu-header">Lain-lain</li>
-                        <li class="nav-item @yield('simulasi-active')"><a class="nav-link" href="{{route("dashboard")}}"><i class="fas fa-calculator"></i> <span>Simulasi Telur Asin</span></a></li>
+                        <li class="nav-item @yield('simulasi-active')"><a class="nav-link" href="{{route("simulasi")}}"><i class="fas fa-calculator"></i> <span>Simulasi Telur Asin</span></a></li>
                     @endif
                 </ul>
             </aside>

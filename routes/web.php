@@ -57,6 +57,11 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('admin/laporan/bulanan', 'LaporanBulananController@index')->middleware('role:admin')->name('admin-index-laporan-bulanan');
     Route::get('admin/laporan/bulanan/{id}', 'LaporanBulananController@show')->middleware('role:admin')->name('admin-show-laporan-bulanan');
+
+    Route::get('admin/simulasi', 'SimulasiController@create')->middleware('role:karyawan')->name('simulasi');
+    Route::post('admin/simulasi/process', 'SimulasiController@store')->middleware('role:karyawan')->name('store-simulasi');
+    Route::get('admin/simulasi/hasil', 'SimulasiController@show')->middleware('role:karyawan')->name('show-simulasi');
+
 });
 
 
