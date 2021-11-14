@@ -7,6 +7,9 @@
 
 @section('content')
     <!-- Main Content -->
+    <script>
+        let available = @json($available);
+    </script>
     <div class="main-content">
         <section class="section">
             <div class="section-header">
@@ -49,7 +52,8 @@
                                     <div class="form-group">
                                         <div class="form-group">
                                             <label for="no_kandang">Nomor Kandang</label>
-                                            <select class="form-control select2" name="no_kandang" form="form-create-laporan-harian">
+                                            <select class="form-control select2" id="dropdown-no-kandang" name="no_kandang" form="form-create-laporan-harian">
+                                                <option value="" aria-hidden>--Pilih satu kandang dibawah ini--</option>
                                                 @foreach($data as $row)
                                                     <option value="{{$row->no_kandang}}">{{$row->no_kandang}}</option>
                                                 @endforeach
@@ -70,12 +74,12 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="panen_harian">Jumlah Panen Harian</label>
-                                        <input type="number" id="panen_harian" name="panen_harian" step="any" class="form-control">
+                                        <input type="number" id="panen_harian" name="panen_harian" step="any" class="form-control" value="0">
                                     </div>
                                     <div class="form-group">
                                         <div class="form-group">
                                             <label for="kondisi_kandang">Kondisi Kandang</label>
-                                            <select class="form-control select2" name="kondisi_kandang" form="form-create-laporan-harian">
+                                            <select id="kondisi_kandang" class="form-control select2" name="kondisi_kandang" form="form-create-laporan-harian">
                                                 <option value="baik">Baik</option>
                                                 <option value="buruk">Buruk</option>
                                             </select>
@@ -96,6 +100,7 @@
             </div>
         </section>
     </div>
+
 
 @endsection
 

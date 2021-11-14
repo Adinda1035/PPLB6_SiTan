@@ -53,6 +53,7 @@
                                         <div class="card card-warning">
                                     @else
                                         <div class="card card-primary">
+                                        @php($safe = true)
                                     @endif
                                         <div class="card-header">
                                             <h4>Laporan Harian Kandang #{{$row->no_kandang}}</h4>
@@ -85,8 +86,24 @@
                                                     <td><b>&emsp;{{$row->laporan->jumlah_bebek_mati}}</b></td>
                                                 </tr>
                                             </table>
+                                            <div class="note mt-4">
+                                                <span class="font-weight-bold">Catatan:</span><br>
+                                                @if (isset($safe))
+                                                    <li><span class="text-primary">Kondisi kandang aman - Tidak ada perubahan berarti!</span></li>
+                                                @else
+                                                    @if ($row->laporan->jumlah_bebek_mati > 0)
+                                                        <li class="text-danger">Terdapat bebek mati di kandang ini, mohon cek kondisi kandang dan bebek lainnya.</li>
+                                                    @endif
+                                                    @if ($row->laporan->jumlah_bebek_sakit > 0)
+                                                        <li class="text-warning">Terdapat bebek sakit di kandang ini, mohon cek kandang ini, dan lakukan perawatan.</li>
+                                                    @endif
+                                                    @if ($row->laporan->kondisi_kandang == "buruk")
+                                                        <li class="text-warning">Kondisi kandang buruk, mohon berikan perhatian lebih untuk kandang ini.</li>
+                                                    @endif
+                                                @endif
+                                            </div>
                                         </div>
-                                        <div class="card-footer">
+                                        <div class="card-footer font-weight-bold">
                                             {{$row->nama}}
                                         </div>
                                     </div>

@@ -59,10 +59,23 @@ class LaporanController extends Controller
      */
     public function create()
     {
+        $available = [];
+
         $id = Auth::user()->id;
         $data = DB::table('kandangs')->get()->where('id_karyawan', $id);
 
-        return view('karyawan.laporan.create-laporan', compact("data"));
+        foreach($data as $row){
+            $to = \Carbon\Carbon::now();
+            $from = \Carbon\Carbon::createFromFormat('Y-m-d', $row->tanggal_lahir);
+            $diff = $to->diff($from);
+            $row->diffMonth = ($diff->y*12) + $diff->m;
+
+            if ($row->diffMonth>2) {
+                array_push($available, $row->no_kandang);
+            }
+        }
+
+        return view('karyawan.laporan.create-laporan', compact("data", "available"));
     }
 
     /**

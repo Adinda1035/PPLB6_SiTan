@@ -113,7 +113,7 @@
 
                     @if(Auth::user()->hasRole('karyawan'))
                         <li class="menu-header">Lain-lain</li>
-                        <li class="nav-item @yield('simulasi-active')"><a class="nav-link" href="{{route("dashboard")}}"><i class="fas fa-fire"></i> <span>Simulasi Telur Asin</span></a></li>
+                        <li class="nav-item @yield('simulasi-active')"><a class="nav-link" href="{{route("dashboard")}}"><i class="fas fa-calculator"></i> <span>Simulasi Telur Asin</span></a></li>
                     @endif
                 </ul>
             </aside>
@@ -152,6 +152,9 @@
     <!-- Template JS File -->
     <script src="{{asset("bootstrap/assets/js/scripts.js")}}"></script>
     <script src="{{asset("bootstrap/assets/js/custom.js")}}"></script>
+
+    <!-- Own JS File -->
+    <script src="{{asset("bootstrap/assets/js/disabled.js")}}"></script>
 
     <!-- Page Specific JS File -->
     <script src="{{asset("bootstrap/assets/js/page/bootstrap-modal.js")}}"></script>
