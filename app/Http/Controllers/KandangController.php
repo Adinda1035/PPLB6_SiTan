@@ -18,11 +18,17 @@ class KandangController extends Controller
      */
     public function index()
     {
+//        $data = DB::table('kandangs')
+//                    ->select('kandangs.*', 'users.nama')
+//                    ->orderBy('no_kandang')
+//                    ->join('users', 'kandangs.id_karyawan', '=', 'users.id')
+//                    ->simplePaginate(10);
+
         $data = DB::table('kandangs')
-                    ->select('kandangs.*', 'users.nama')
-                    ->orderBy('no_kandang')
-                    ->join('users', 'kandangs.id_karyawan', '=', 'users.id')
-                    ->simplePaginate(10);
+            ->select('kandangs.*', 'users.nama')
+            ->orderBy('no_kandang')
+            ->leftJoin('users', 'kandangs.id_karyawan', '=', 'users.id')
+            ->simplePaginate(10);
 
         foreach($data as $row){
             $to = \Carbon\Carbon::now();

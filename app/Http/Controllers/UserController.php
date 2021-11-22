@@ -39,15 +39,21 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request -> validate([
-            "username"=> 'required|string|min:6|max:30',
+            "username"=> 'unique:users|required|string|min:6|max:30',
             "nama" => 'required|string|min:3',
-            "email" => 'required|string|email|max:100',
-            "telp" => 'required|string|min:6|max:20',
+            "email" => 'unique:users|required|email|regex:/(.*)@(.*)\.com/i|max:50',
+            "telp" => 'required|string|min:6|max:13',
             "password" => 'required|min:8',
         ],
         [
+            'unique' => 'Input pada kolom :attribute sudah digunakan. Tolong gunakan :attribute lain',
             'required' => 'Kolom :attribute tidak boleh kosong.',
+            'email.regex' => 'Email harus diakhiri dengan .com',
             'min' => 'Isi kolom :attribute minimal :min karakter.',
+            'max' => 'Isi kolom :attribute maksimal :max karakter.',
+            'telp.min' => 'Isi kolom nomor telepon minimal :min karakter.',
+            'telp.max' => 'Isi kolom nomor telepon maksimal :max karakter.',
+            'email.max' => 'Isi kolom email maksimal :max karakter.',
             'between' => 'Isi kolom :attribute tidak di antara :min - :max karakter.',
         ]);
 
@@ -114,12 +120,18 @@ class UserController extends Controller
 
         $request -> validate([
             "nama" => 'required|string|min:3',
-            "email" => 'required|string|email|max:100',
-            "telp" => 'required|string|min:6|max:20',
+            "email" => 'unique:users|required|email|regex:/(.*)@(.*)\.com/i|max:50',
+            "telp" => 'required|string|min:6|max:13',
         ],
         [
+            'unique' => 'Input pada kolom :attribute sudah digunakan. Tolong gunakan :attribute lain',
             'required' => 'Kolom :attribute tidak boleh kosong.',
+            'email.regex' => 'Email harus diakhiri dengan .com',
             'min' => 'Isi kolom :attribute minimal :min karakter.',
+            'max' => 'Isi kolom :attribute maksimal :max karakter.',
+            'telp.min' => 'Isi kolom nomor telepon minimal :min karakter.',
+            'telp.max' => 'Isi kolom nomor telepon maksimal :max karakter.',
+            'email.max' => 'Isi kolom email maksimal :max karakter.',
             'between' => 'Isi kolom :attribute tidak di antara :min - :max karakter.',
         ]);
 

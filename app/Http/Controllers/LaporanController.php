@@ -86,13 +86,17 @@ class LaporanController extends Controller
      */
     public function store(Request $request)
     {
+        if ($request->panen_harian == null) {
+            $request->panen_harian = 0;
+        }
+
         $row = Kandang::where('no_kandang', $request->no_kandang)->firstOrFail();
 
         $id = Auth::user()->id;
         $request -> validate([
             "no_kandang"=> 'required|integer|gt:0|gte:0',
             "tanggal_laporan"=> 'required|date',
-            "panen_harian"=> 'required|numeric|min:0',
+            "panen_harian"=> 'numeric|min:0',
             "jumlah_bebek_sakit" => 'required|integer|min:0|max:'.$row->jumlah_bebek ,
             "jumlah_bebek_mati" => 'required|integer|min:0|max:'.$row->jumlah_bebek ,
             "kondisi_kandang" => 'required|string',
@@ -163,6 +167,9 @@ class LaporanController extends Controller
      */
     public function update(Request $request, $id)
     {
+        if ($request->panen_harian == null) {
+            $request->panen_harian = 0;
+        }
 
         $id_karyawan = Auth::user()->id;
         $row = Kandang::where('no_kandang', $request->no_kandang)->firstOrFail();
