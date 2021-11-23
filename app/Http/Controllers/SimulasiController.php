@@ -2,16 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Simulasi;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class SimulasiController extends Controller
 {
+    public function index()
+    {
+        $id = Auth::user()->id;
+
+        $data = DB::table('simulasis')
+                    ->where('id_karyawan', $id)
+                    ->orderBy('created_at', 'desc')
+                    ->simplePaginate(10);
+
+        return view('karyawan.simulasi.index-simulasi', compact("data"));
+    }
+
     public function create() {
         return view('karyawan.simulasi.create-simulasi');
     }
 
     public function store(Request $request) {
-
         $request -> validate([
             "jumlah_telur"=> 'required|integer|min:0',
         ],
@@ -21,19 +35,36 @@ class SimulasiController extends Controller
             'required' => 'Kolom Jumlah Telur harus bernilai angka positif atau 0',
         ]);
 
-        if ($request->metode_pembuatan === "1") {
-            $ingredients = array(
-                        "Air" => round($request->jumlah_telur*125) . " ml",
-                        "Garam" => round($request->jumlah_telur*42) . " gram",
-                        "Bawang Putih" => round(((round($request->jumlah_telur*125)+round($request->jumlah_telur*42)) * 0.3 )) . " gram",
-                        "Waktu Pemeraman" => 12 . " hari",
-                    );
+        $id = Auth::user()->id;
 
-            if ($request->tingkat_keasinan === "2") {
+        $laporan = Simulasi::create([
+            'metode_pembuatan' => $request->metode_pembuatan,
+            'tingkat_keasinan' => $request->tingkat_keasinan,
+            'jumlah_telur' => $request->jumlah_telur,
+            'id_karyawan' => $id,
+            'created_at' => \Carbon\Carbon::now()->toDateTimeString(),
+        ]);
+
+        return redirect(route("index-simulasi"))->with('success',"Sukses menambahkan simulasi baru");
+    }
+
+    public function show(Request $request, $id) {
+        $row = Simulasi::whereId($id)->first();
+
+
+        if ($row->metode_pembuatan == 1) {
+            $ingredients = array(
+                "Air" => round($row->jumlah_telur*125) . " ml",
+                "Garam" => round($row->jumlah_telur*42) . " gram",
+                "Bawang Putih" => round(((round($row->jumlah_telur*125)+round($row->jumlah_telur*42)) * 0.3 )) . " gram",
+                "Waktu Pemeraman" => 12 . " hari",
+            );
+
+            if ($row->tingkat_keasinan == 2) {
                 $ingredients = array(
-                    "Air" => round($request->jumlah_telur*125)  . " ml",
-                    "Garam" => round($request->jumlah_telur*42) + round($request->jumlah_telur*42*0.25) . " gram",
-                    "Bawang Putih" => round(((round($request->jumlah_telur*125))+(round($request->jumlah_telur*42) + round($request->jumlah_telur*42*0.25))) * 0.3 ) . " gram",
+                    "Air" => round($row->jumlah_telur*125)  . " ml",
+                    "Garam" => round($row->jumlah_telur*42) + round($row->jumlah_telur*42*0.25) . " gram",
+                    "Bawang Putih" => round(((round($row->jumlah_telur*125))+(round($row->jumlah_telur*42) + round($row->jumlah_telur*42*0.25))) * 0.3 ) . " gram",
                     "Waktu Pemeraman" => 15 . " hari",
                 );
             }
@@ -48,16 +79,16 @@ class SimulasiController extends Controller
             ];
         }
 
-        else if ($request->metode_pembuatan === "2") {
+        else if ($row->metode_pembuatan == 2) {
             $ingredients = array(
-                "Air" => round($request->jumlah_telur*125) . " ml",
-                "Garam" => round($request->jumlah_telur*42) . " gram",
+                "Air" => round($row->jumlah_telur*125) . " ml",
+                "Garam" => round($row->jumlah_telur*42) . " gram",
                 "Waktu Pemeraman" => 12 . " hari",
             );
-            if ($request->tingkat_keasinan === "2") {
+            if ($row->tingkat_keasinan == 2) {
                 $ingredients = array(
-                    "Air" => round($request->jumlah_telur*125) . " ml",
-                    "Garam" => round($request->jumlah_telur*42) + round($request->jumlah_telur*42*0.25) . " gram",
+                    "Air" => round($row->jumlah_telur*125) . " ml",
+                    "Garam" => round($row->jumlah_telur*42) + round($row->jumlah_telur*42*0.25) . " gram",
                     "Waktu Pemeraman" => 15 . " hari",
                 );
             }
@@ -71,18 +102,18 @@ class SimulasiController extends Controller
             ];
         }
 
-        else if ($request->metode_pembuatan === "3") {
+        else if ($row->metode_pembuatan == 3) {
             $ingredients = array(
                 "Air" => "Secukupnya",
-                "Garam" => round($request->jumlah_telur*42) . " gram",
-                "Serbuk Batu Bata" => round($request->jumlah_telur*34) . " gram",
+                "Garam" => round($row->jumlah_telur*42) . " gram",
+                "Serbuk Batu Bata" => round($row->jumlah_telur*34) . " gram",
                 "Waktu Pemeraman" => 12 . " hari",
             );
-            if ($request->tingkat_keasinan === "2") {
+            if ($row->tingkat_keasinan == 2) {
                 $ingredients = array(
                     "Air" => "Secukupnya",
-                    "Garam" => round($request->jumlah_telur*42) + round($request->jumlah_telur*42*0.25) . " gram",
-                    "Serbuk Batu Bata" => round($request->jumlah_telur*34) . " gram",
+                    "Garam" => round($row->jumlah_telur*42) + round($row->jumlah_telur*42*0.25) . " gram",
+                    "Serbuk Batu Bata" => round($row->jumlah_telur*34) . " gram",
                     "Waktu Pemeraman" => 14 . " hari",
                 );
             }
@@ -97,18 +128,18 @@ class SimulasiController extends Controller
             ];
         }
 
-        else if ($request->metode_pembuatan === "4") {
+        else if ($row->metode_pembuatan == 4) {
             $ingredients = array(
                 "Air" => "Secukupnya",
-                "Garam" => round($request->jumlah_telur*5) . " gram",
-                "Abu Gosok" => round($request->jumlah_telur*100) . " gram",
+                "Garam" => round($row->jumlah_telur*5) . " gram",
+                "Abu Gosok" => round($row->jumlah_telur*100) . " gram",
                 "Waktu Pemeraman" => 12 . " hari",
             );
-            if ($request->tingkat_keasinan === "2") {
+            if ($row->tingkat_keasinan == 2) {
                 $ingredients = array(
                     "Air" => "Secukupnya",
-                    "Garam" => round($request->jumlah_telur*5) + round($request->jumlah_telur*5*0.25) . " gram",
-                    "Abu Gosok" => round($request->jumlah_telur*100) . " gram",
+                    "Garam" => round($row->jumlah_telur*5) + round($row->jumlah_telur*5*0.25) . " gram",
+                    "Abu Gosok" => round($row->jumlah_telur*100) . " gram",
                     "Waktu Pemeraman" => 14 . " hari",
                 );
             }
@@ -123,20 +154,20 @@ class SimulasiController extends Controller
             ];
         }
 
-        else if ($request->metode_pembuatan === "5") {
+        else if ($row->metode_pembuatan == 5) {
             $ingredients = array(
                 "Air" => "Secukupnya",
-                "Garam" => round($request->jumlah_telur*41) . " gram",
-                "Serbuk Batu Bata" => round($request->jumlah_telur*34) . " gram",
-                "Kulit Manggis" => round($request->jumlah_telur*41) * 3 . " gram",
+                "Garam" => round($row->jumlah_telur*41) . " gram",
+                "Serbuk Batu Bata" => round($row->jumlah_telur*34) . " gram",
+                "Kulit Manggis" => round($row->jumlah_telur*41) * 3 . " gram",
                 "Waktu Pemeraman" => 12 . " hari",
             );
-            if ($request->tingkat_keasinan === "2") {
+            if ($row->tingkat_keasinan == 2) {
                 $ingredients = array(
                     "Air" => "Secukupnya",
-                    "Garam" => round($request->jumlah_telur*41) + round($request->jumlah_telur*41*0.25) . " gram",
-                    "Serbuk Batu Bata" => round($request->jumlah_telur*34) . " gram",
-                    "Kulit Manggis" => round((round($request->jumlah_telur*41) + round($request->jumlah_telur*41*0.25)) * 0.3) . " gram",
+                    "Garam" => round($row->jumlah_telur*41) + round($row->jumlah_telur*41*0.25) . " gram",
+                    "Serbuk Batu Bata" => round($row->jumlah_telur*34) . " gram",
+                    "Kulit Manggis" => round((round($row->jumlah_telur*41) + round($row->jumlah_telur*41*0.25)) * 0.3) . " gram",
                     "Waktu Pemeraman" => 14 . " hari",
                 );
             }
@@ -152,12 +183,11 @@ class SimulasiController extends Controller
             ];
         }
 
-        return redirect()->action([SimulasiController::class, 'show'], ['ingredients' => $ingredients, 'steps' => $steps]);
+        return view('karyawan.simulasi.result-simulasi', compact("row","ingredients", "steps"));
     }
 
-    public function show(Request $request) {
-        $ingredients = $request->ingredients;
-        $steps = $request->steps;
-        return view('karyawan.simulasi.result-simulasi', compact("ingredients", "steps"));
+    public function destroy(Request $request, $id) {
+        Simulasi::whereId($id)->delete();
+        return redirect(route("index-simulasi"))->with('success',"Sukses menghapus simulasi tersebut");
     }
 }

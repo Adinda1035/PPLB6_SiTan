@@ -58,9 +58,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('admin/laporan/bulanan', 'LaporanBulananController@index')->middleware('role:admin')->name('admin-index-laporan-bulanan');
     Route::get('admin/laporan/bulanan/{id}', 'LaporanBulananController@show')->middleware('role:admin')->name('admin-show-laporan-bulanan');
 
-    Route::get('admin/simulasi', 'SimulasiController@create')->middleware('role:karyawan')->name('simulasi');
-    Route::post('admin/simulasi/process', 'SimulasiController@store')->middleware('role:karyawan')->name('store-simulasi');
-    Route::get('admin/simulasi/hasil', 'SimulasiController@show')->middleware('role:karyawan')->name('show-simulasi');
+    Route::get('simulasi', 'SimulasiController@index')->middleware('role:karyawan')->name('index-simulasi');
+    Route::get('simulasi/show/{id}', 'SimulasiController@show')->middleware('role:karyawan')->name('show-simulasi');
+    Route::get('simulasi/create', 'SimulasiController@create')->middleware('role:karyawan')->name('create-simulasi');
+    Route::post('simulasi/store', 'SimulasiController@store')->middleware('role:karyawan')->name('store-simulasi');
+    Route::post('simulasi/delete/{id}', 'SimulasiController@destroy')->middleware('role:karyawan')->name('destroy-simulasi');
 
 });
 

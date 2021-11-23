@@ -3,6 +3,7 @@
 @section('title') Simulasi Pembuatan Telur @endsection
 
 @section('simulasi-active') active @endsection
+@section('create-simulasi-active') active @endsection
 
 @section('content')
     <!-- Main Content -->
@@ -27,13 +28,6 @@
                         <li>Pilih salah satu tingkat keasinan yang diinginkan (jumlah bahan yang dibutuhkan akan berbeda!).</li>
                         <li>Jumlah telur merupakan jumlah telur yang akan digunakan (dalam butir).</li>
                     </ul>
-{{--                    $table->integer('no_kandang');--}}
-{{--                    $table->double('panen_harian', 8, 2);--}}
-{{--                    $table->integer('jumlah_bebek_sakit');--}}
-{{--                    $table->integer('jumlah_bebek_mati');--}}
-{{--                    $table->string('kondisi_kandang');--}}
-{{--                    $table->bigInteger('id_karyawan');--}}
-
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-6">
                         <div class="card">
