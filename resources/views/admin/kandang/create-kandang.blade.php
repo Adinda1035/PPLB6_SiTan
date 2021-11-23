@@ -6,6 +6,8 @@
 @section('create-kandang-active') active @endsection
 
 @section('content')
+<form method="post" action="{{route("admin-store-kandang")}}" id="form-create-kandang">
+    @csrf
     <!-- Main Content -->
     <div class="main-content">
         <section class="section">
@@ -38,8 +40,6 @@
                             <div class="card-header">
                                 <h4>Form Buat Kandang</h4>
                             </div>
-                            <form method="post" action="{{route("admin-store-kandang")}}" id="form-create-kandang">
-                                @csrf
                                 <div class="card-body">
                                     <div class="form-group">
                                         <label for="no_kandang">Nomor Kandang</label>
@@ -64,17 +64,37 @@
                                         </div>
                                     </div>
                                     <div class="card-footer text-center">
-                                        <button class="btn btn-primary">Submit</button>
+                                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modal-create">Submit</button>
                                     </div>
                                 </div>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     </div>
-
+        <!-- Modal -->
+        <div class="modal fade" id="modal-create" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-primary" id="exampleModalCenterTitle">Konfirmasi Pembuatan Kandang</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Yakin untuk menambahkan kandang ini?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Modal -->
+</form>
 @endsection
 
 

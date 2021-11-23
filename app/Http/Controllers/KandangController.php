@@ -61,8 +61,8 @@ class KandangController extends Controller
     public function store(Request $request)
     {
         $request -> validate([
-            "no_kandang"=> 'required|integer|gt:0|gte:0|unique:kandangs',
-            "jumlah_bebek" => 'required|integer|min:0',
+            "no_kandang"=> 'required|integer|gt:0|gte:0|unique:kandangs|max:99999',
+            "jumlah_bebek" => 'required|integer|min:0|max:9999',
             "id_karyawan" => 'required|integer',
         ],
         [
@@ -70,6 +70,8 @@ class KandangController extends Controller
             'no_kandang.unique' => 'Nomor kandang tidak boleh sama dengan kandang lain.',
             'jumlah_bebek.min' => 'Kolom :attribute harus bernilai angka positif.',
             'min' => 'Isi kolom :attribute minimal :min karakter.',
+            'no_kandang.max' => 'Isi kolom nomor kandang tidak boleh lebih dari :max .',
+            'jumlah_bebek.max' => 'Isi kolom jumlah bebek tidak boleh lebih dari :max .',
             'gt' => 'Kolom :attribute harus bernilai angka positif',
         ]);
 
@@ -105,7 +107,7 @@ class KandangController extends Controller
     public function edit(Request $request, $id)
     {
         $row = Kandang::find($id);
-        $data = User::with('roles')->get();
+        $data = User::role('karyawan')->get();
 
         return view('admin.kandang.edit-kandang', compact("row", "data"));
     }

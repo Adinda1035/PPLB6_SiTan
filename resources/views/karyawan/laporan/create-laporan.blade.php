@@ -7,6 +7,8 @@
 
 @section('content')
     <!-- Main Content -->
+<form method="post" action="{{route("store-laporan-harian")}}" id="form-create-laporan-harian">
+    @csrf
     <script>
         let available = @json($available);
     </script>
@@ -46,8 +48,6 @@
                             <div class="card-header">
                                 <h4>Form Buat Laporan Harian</h4>
                             </div>
-                            <form method="post" action="{{route("store-laporan-harian")}}" id="form-create-laporan-harian">
-                                @csrf
                                 <div class="card-body">
                                     <div class="form-group">
                                         <div class="form-group">
@@ -90,18 +90,37 @@
                                         <input type="text" id="nama_karyawan" name="nama_karyawan" class="form-control" value="{{Auth::user()->nama}}" disabled>
                                     </div>
                                     <div class="card-footer text-center">
-                                        <button class="btn btn-primary">Submit</button>
+                                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#modal-create">Submit</button>
                                     </div>
                                 </div>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
     </div>
-
-
+    <!-- Modal -->
+    <div class="modal fade" id="modal-create" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-primary" id="exampleModalCenterTitle">Konfirmasi Pembuatan Laporan Harian</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Yakin untuk menambahkan laporan harian ini?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal -->
+</form>
 @endsection
 
 

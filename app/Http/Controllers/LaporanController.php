@@ -178,7 +178,7 @@ class LaporanController extends Controller
         $request -> validate([
             "no_kandang"=> 'required|integer|gt:0|gte:0',
             "tanggal_laporan"=> 'required|date',
-            "panen_harian"=> 'required|numeric|min:0',
+            "panen_harian"=> 'required|numeric|min:0|max:9999999',
             "jumlah_bebek_sakit" => 'required|integer|min:0|max:'.$row->jumlah_bebek ,
             "jumlah_bebek_mati" => 'required|integer|min:0|max:'.$row->jumlah_bebek ,
             "kondisi_kandang" => 'required|string',
@@ -186,6 +186,9 @@ class LaporanController extends Controller
             [
                 'required' => 'Kolom :attribute tidak boleh kosong.',
                 'min' => 'Isi kolom :attribute minimal :min karakter.',
+                'panen_harian.max' => 'Isi kolom panen harian tidak boleh lebih dari :max.',
+                'jumlah_bebek_mati.max' => 'Isi kolom jumlah bebek mati tidak bisa lebih dari jumlah bebek pada kandang tersebut.',
+                'jumlah_bebek_sakit.max' => 'Isi kolom jumlah bebek sakit tidak bisa lebih dari jumlah bebek pada kandang tersebut.',
                 'gt' => 'Kolom :attribute harus bernilai angka positif',
             ]);
 

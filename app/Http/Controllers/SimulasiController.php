@@ -27,11 +27,12 @@ class SimulasiController extends Controller
 
     public function store(Request $request) {
         $request -> validate([
-            "jumlah_telur"=> 'required|integer|min:0',
+            "jumlah_telur"=> 'required|integer|min:0|max:9999999',
         ],
 
         [
             'min' => 'Kolom Jumlah Telur harus bernilai angka positif atau 0',
+            'max' => 'Kolom Jumlah Telur tidak boleh lebih dari :max.',
             'required' => 'Kolom Jumlah Telur harus bernilai angka positif atau 0',
         ]);
 

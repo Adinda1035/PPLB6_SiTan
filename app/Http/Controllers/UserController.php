@@ -40,8 +40,8 @@ class UserController extends Controller
     {
         $request -> validate([
             "username"=> 'unique:users|required|string|min:6|max:30',
-            "nama" => 'required|string|min:3',
-            "email" => 'unique:users|required|email|regex:/(.*)@(.*)\.com/i|max:50',
+            "nama" => 'required|string|min:3|max:100',
+            "email" => 'unique:users|required|email|regex:/(.*)@(.*)\.com/i|max:100',
             "telp" => 'required|string|min:6|max:13',
             "password" => 'required|min:8',
         ],
@@ -119,8 +119,8 @@ class UserController extends Controller
         $row = User::with('roles')->get()->where('id', $id)->first();
 
         $request -> validate([
-            "nama" => 'required|string|min:3',
-            "email" => 'unique:users|required|email|regex:/(.*)@(.*)\.com/i|max:50',
+            "nama" => 'required|string|min:3|max:100',
+            "email" => 'unique:users|required|email|regex:/(.*)@(.*)\.com/i|max:100',
             "telp" => 'required|string|min:6|max:13',
         ],
         [
