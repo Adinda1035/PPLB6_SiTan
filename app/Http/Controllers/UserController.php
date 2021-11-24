@@ -120,7 +120,7 @@ class UserController extends Controller
 
         $request -> validate([
             "nama" => 'required|string|min:3|max:100',
-            "email" => 'unique:users|required|email|regex:/(.*)@(.*)\.com/i|max:100',
+            "email" => 'required|email|regex:/(.*)@(.*)\.com/i|max:100|unique:users,email,'.$row->id,
             "telp" => 'required|string|min:6|max:13',
         ],
         [
